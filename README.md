@@ -3,13 +3,19 @@
 ```
 FontDumpK.exe フォント名 変換元HTML 変換先HTML [-map=<Unicodeマップの出力先>] [-descent=<true/false>]
 ```
-EBStudio用HTMLを外字フォントとセットで出力するツールです。
+UTF8形式のEBStudio用HTMLからShift_JIS形式のHTMLを外字フォントとセットで出力するツールです。
 外字フォントファイルはGaiji.xml、外字置換定義ファイルはGaijiMap.xmlに保存されます。
 
 | オプション | 値 |
 |-----------|------------|
 | -map | EBシリーズ用Unicodeマップの出力先。省略した場合は出力されません。 |
 | -descent | falseの場合は大きめに文字が出力されます。 ただし一部の文字がはみ出ます。 |
+
+## 使い方
+1. ダウンロード・展開し、binary/内にutf8.htmlを配置。
+2. Convert.batを実行。
+3. テーブルを画像に変換する場合はmain.img.html・しない場合はmain.html、さらにGaiji.xml、GaijiMap.xmlをebsutdioで設定。
+4. 変換し、map.mapを適切な場所に配置。
 
 ## 問題点
 1. 外字フォントファイルの内32X30,16X30サイズは出力されません。EBStudioに入力すると期待通りの結果にならないからです。
