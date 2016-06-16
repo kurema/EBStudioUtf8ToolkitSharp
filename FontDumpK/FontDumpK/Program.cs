@@ -251,7 +251,7 @@ namespace FontDumpK
                 {
                     fontDatasHalf[j][i].ebcode = ebc.ToString("X");
                 }
-                if (gmfull[i].unicode.Length < 7)
+                if (gmhalf  [i].unicode.Length < 7)
                 {
                     ebmapBuilder.AppendLine("h" + ebc.ToString("X") + "\tu" + new String('0', Math.Max(6 - gmhalf[i].unicode.Length, 0)) + gmhalf[i].unicode.Substring(2) + "\t" + gmhalf[i].alt);
                 }
