@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="gaijiSet"
+    elementFormDefault="qualified"
+    xmlns=""
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="gaijiData">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="fontSet">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="fontData" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="size" type="fontSize"/>
+            <xs:attribute name="start" type="fourDigitHex"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="fontData">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="ebcode" type="fourDigitHex" use="optional"/>
+          <xs:attribute name="unicode" type="unicode" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="fourDigitHex">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9A-Fa-f]{1,4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="fontSize">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d+X\d+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="unicode">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9A-Fa-f]+|#x[0-9A-Fa-f]+|#[0-9]{1,8}"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

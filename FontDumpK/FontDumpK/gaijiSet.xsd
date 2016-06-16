@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="gaijiSet"
+    elementFormDefault="qualified"
+    xmlns=""
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="gaijiSet">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="gaijiMap">
+          <xs:complexType>
+            <xs:sequence />
+            <xs:attribute name="unicode" type="unicode"/>
+            <xs:attribute name="ebcode" type="fourDigitHex"/>
+            <xs:attribute name="name" type="xs:string" use="optional"/>
+            <xs:attribute name="alt" type="xs:string" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="fourDigitHex">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9A-Fa-f]{1,4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="unicode">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9A-Fa-f]+|#x[0-9A-Fa-f]+|#[0-9]{1,8}"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
