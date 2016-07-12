@@ -62,6 +62,7 @@ namespace FontDumpK
         {
             var lists = new List<string>();
             var sjis = Encode(text, ff, out lists, heights);
+
             var dic = new Dictionary<string, string>();
             var defaultDic = DefaultAltDictionary;
             foreach (var failed in lists)
@@ -71,7 +72,20 @@ namespace FontDumpK
                 {
                     dic[str] = defaultDic[str];
                 }
-                else { dic[str] = null; }
+                else
+                {
+                   var temp = Conversion.SimplifiedToTraditional(failed);
+                    try
+                    {
+                        var sjisEncode = Encoding.GetEncoding("Shift_JIS", new EncoderExceptionFallback(), new DecoderExceptionFallback());
+                        sjisEncode.GetBytes(temp);
+                        dic[str] = temp;
+                    }
+                    catch
+                    {
+                        dic[str] = null;
+                    }
+                }
             }
             gaijiData gd;
             gaijiSet gs;
@@ -79,14 +93,14 @@ namespace FontDumpK
             CreateSetFromString(dic, ff, out gd, out gs,out map, heights);
             {
                 var ser = new System.Xml.Serialization.XmlSerializer(typeof(gaijiData));
-                using (var sw = new System.IO.StreamWriter(gaijiDataPath))
+                using (var sw = new System.IO.StreamWriter(gaijiDataPath,false, Encoding.GetEncoding("Shift_JIS")))
                 {
                     ser.Serialize(sw, gd);
                 }
             }
             {
                 var ser = new System.Xml.Serialization.XmlSerializer(typeof(gaijiSet));
-                using (var sw = new System.IO.StreamWriter(gaijiSetPath))
+                using (var sw = new System.IO.StreamWriter(gaijiSetPath, false, Encoding.GetEncoding("Shift_JIS")))
                 {
                     ser.Serialize(sw, gs);
                 }
@@ -105,9 +119,18 @@ namespace FontDumpK
 
         public static byte[] Encode(string text, FontFamily ff, out List<string> failed, params int[] heights)
         {
-            failed = new List<string>();
-            var sjis = Encoding.GetEncoding("Shift_JIS", new EncoderEscapeFallback() { failedLists = failed }, DecoderFallback.ReplacementFallback);
-            return (sjis.GetBytes(text));
+            var temp = new List<string>();
+            text= System.Text.RegularExpressions.Regex.Replace(text, "[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ㍉㌔㌢㍍㌘㌧㌃㌶㍑㍗㌍㌦㌣㌫㍊㌻㎜㎝㎞㎎㎏㏄㎡㍻〝〟№㏍℡㊤㊥㊦㊧㊨㈱㈲㈹㍾㍽㍼≒≡∫∮√⊥∠∟⊿∵∩∪]",
+                (a)=> {
+                    if (!temp.Contains(a.Value))
+                    {
+                        temp.Add(a.Value);
+                    }
+                    return string.Format("&#x{0:X};", (int)a.Value[0]);
+                });
+            var sjis = Encoding.GetEncoding(932, new EncoderEscapeFallback() { failedLists = temp }, DecoderFallback.ReplacementFallback);
+            failed = temp;
+            return sjis.GetBytes(text);
         }
 
         public class EncoderEscapeFallback : EncoderFallback
