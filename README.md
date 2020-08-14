@@ -1,4 +1,8 @@
 # EBStudioUtf8ToolkitSharp
+## Note
+[EBStudio2](http://ebstudio.info/manual/EBStudio2/EBStudio2.html)がリリースされたのでこのツールは現在必要ありません。  
+EBStudio2には外字パターンの自動作成機能があります。
+
 ## 使い方
 ```
 FontDumpK.exe フォント名 変換元HTML 変換先HTML [-map=<Unicodeマップの出力先>] [-descent=<true/false>]
